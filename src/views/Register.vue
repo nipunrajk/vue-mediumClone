@@ -11,12 +11,13 @@
             >
           </p>
           VALIDATION ERROR
-          <form>
+          <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Username"
+                v-model="username"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -24,6 +25,7 @@
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Email"
+                v-model="email"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -31,14 +33,16 @@
                 class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
+                v-model="password"
               />
             </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
+            <button
+              class="btn btn-lg btn-primary pull-xs-right"
+              :disabled="isSubmitting"
+            >
               Sign Up
             </button>
-            {{ count }}
           </form>
-          <button @click="incrementCount">Increment</button>
         </div>
       </div>
     </div>
@@ -48,14 +52,30 @@
 <script>
 export default {
   name: 'AppRegister',
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+    }
+  },
   computed: {
-    count() {
-      return this.$store.state.count
+    isSubmitting() {
+      return this.$store.state.auth.isSubmitting
     },
   },
   methods: {
-    incrementCount() {
-      this.$store.commit('increment')
+    onSubmit() {
+      console.log('onSubmit')
+      this.$store
+        .dispatch('register', {
+          email: this.email,
+          username: this.username,
+          password: this.password,
+        })
+        .then(() => {
+          this.$router.push({ name: 'home' })
+        })
     },
   },
 }
