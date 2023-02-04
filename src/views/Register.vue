@@ -10,7 +10,10 @@
               >Need an account?</router-link
             >
           </p>
-          VALIDATION ERROR
+          <AppValidationErrors
+            v-if="validationErrors"
+            :validation-errors="validationErrors"
+          ></AppValidationErrors>
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
@@ -50,8 +53,14 @@
 </template>
 
 <script>
+import AppValidationErrors from '@/components/ValidationErrors.vue'
+import { actionTypes } from '@/store/modules/auth'
+
 export default {
   name: 'AppRegister',
+  components: {
+    AppValidationErrors,
+  },
   data() {
     return {
       username: '',
@@ -63,12 +72,15 @@ export default {
     isSubmitting() {
       return this.$store.state.auth.isSubmitting
     },
+    validationErrors() {
+      return this.$store.state.auth.validationErrors
+    },
   },
   methods: {
     onSubmit() {
       console.log('onSubmit')
       this.$store
-        .dispatch('register', {
+        .dispatch(actionTypes.register, {
           email: this.email,
           username: this.username,
           password: this.password,
