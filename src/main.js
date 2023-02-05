@@ -9,4 +9,4 @@ import store from './store/store.js'
 import 'bootstrap/dist/css/bootstrap.css'
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.js'
 
-createApp(App).use(router).use(store).use(bootstrap).mount('#app')
+createApp(App).use(router).use(store).mount('#app')
